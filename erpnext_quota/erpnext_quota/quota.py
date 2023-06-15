@@ -52,7 +52,14 @@ def validate_users(self, count_administrator_user, count_website_users, allowed_
         is_desk = "Desk"
 
     for user in user_list:
-        roles = frappe.get_list("Has Role", {'parent': user.name}, ['role'])
+        #roles = frappe.get_list("Has Role", {'parent': user.name}, ['role'])
+        roles = frappe.db.sql(
+                """
+                SELECT role
+                FROM `tabHas Role`
+                WHERE parent = %(parent)s
+                """,{"parent" : parent}, as_dict = 1
+            )
         for row in roles:
             if frappe.get_value("Role", row.role, "desk_access") == 1:
                 active_users += 1
