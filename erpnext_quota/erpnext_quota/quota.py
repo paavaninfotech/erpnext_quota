@@ -58,7 +58,7 @@ def validate_users(self, count_administrator_user, count_website_users, allowed_
                 SELECT role
                 FROM `tabHas Role`
                 WHERE parent = %(parent)s
-                """,{"parent" : parent}, as_dict = 1
+                """,{"parent" : user.name}, as_dict = 1
             )
         for row in roles:
             if frappe.get_value("Role", row.role, "desk_access") == 1:
